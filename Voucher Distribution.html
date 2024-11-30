@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discart - Voucher Distribution</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gotham', sans-serif;
+            font-weight: 100;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Page Container */
+        .voucher-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Logo */
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Subheader */
+        p {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Small Note */
+        .small-note {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* QR Button */
+        .qr-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+            font-family: 'Gotham', sans-serif;
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .qr-btn:hover {
+            background-color: #444;
+        }
+
+        /* QR Image */
+        .qr-image {
+            display: none;
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        /* Input Field */
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Gotham', sans-serif;
+            font-weight: 100;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border: 2px solid #27bcac; /* Custom focus color */
+        }
+
+        /* Button Row */
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .black-btn, .green-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Gotham', sans-serif;
+            font-weight: bold;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .black-btn {
+            background-color: #000;
+            color: white;
+        }
+
+        .black-btn:hover {
+            background-color: #444;
+        }
+
+        .green-btn {
+            background-color: #27bcac;
+            color: white;
+        }
+
+        .green-btn:hover {
+            background-color: #13e7d9;
+        }
+
+        /* Support Text */
+        .support-text {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+        }
+
+        .support-link {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .support-link:hover {
+            color: #27bcac;
+            text-decoration: none;
+        }
+
+        /* Reports Link */
+        .reports-link {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .reports-link a {
+            text-decoration: none;
+            color: #27bcac;
+        }
+
+        .reports-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive for Mobile */
+        @media (max-width: 768px) {
+            .qr-btn {
+                display: none;
+            }
+
+            .qr-image {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .qr-btn {
+                display: block;
+            }
+
+            .qr-image {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="voucher-container">
+        <img src="Discart Logo WM@4x.png" alt="DisCart" class="logo"> <!-- Logo Placeholder -->
+        <h1>Start distributing vouchers!</h1>
+        <p class="small-note">You may tap and hold to show your unique store QR code after their payment to get them started on collecting and redeeming rewards!</p>
+        
+        <!-- QR Code Button for Desktop -->
+        <button class="qr-btn">TAP & HOLD TO SHOW STORE QR</button>
+
+        <!-- QR Code Image for Mobile -->
+        <img src="SYSiD QR.png" alt="Store QR Code" class="qr-image">
+
+        <!-- Voucher Input Field -->
+        <input type="text" class="input-field" placeholder="ENTER VOUCHER CODE">
+
+        <!-- Action Buttons -->
+        <div class="button-row">
+            <button class="black-btn">COLLECTED</button>
+            <button class="green-btn">CONSUMED</button>
+        </div>
+
+        <!-- Reports Link -->
+        <p class="reports-link"><a href="reports4.html">SEE MY REPORTS</a></p>
+
+        <!-- Support Section -->
+        <p class="support-text">Need help? Contact <a href="mailto:support@sysid.co" class="support-link">support</a>.</p>
+    </div>
+</body>
+</html>

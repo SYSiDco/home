@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYSiD Customers</title>
+
+  <!-- Include Gotham Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Gotham:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+    body {
+      font-family: 'Gotham', sans-serif;
+      background-color: #f5f5f5;
+      color: #040707;
+      padding: 20px;
+      display: flex;
+    }
+  
+    /* Sidebar Styling */
+.sidebar {
+  width: 250px;
+  background-color: #13E7D9;
+  color: #000;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+/* Sidebar links (ul and li) */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  width: 100%;
+  margin: 10px 0;  /* Consistent spacing between links */
+  text-align: left; /* Left-aligned links */
+}
+
+/* Sidebar link styles */
+.sidebar ul li a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 200;
+  padding: 10px 20px;  /* Consistent padding for uniform appearance */
+  display: block;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+.sidebar ul li a:hover {
+  background-color: #27bcac;
+  color: #fff;
+}
+
+
+  
+    /* Logo styling */
+    .logo {
+      display: flex;
+      align-items: center; /* Vertically align if the logo is an image or text */
+      font-size: 22px;
+      font-weight: bold;
+      flex-shrink: 0; /* Prevent logo from shrinking */
+    }
+  
+    .logo-img {
+      height: 50px;  /* Adjust height to fit your logo */
+      width: auto;   /* Maintain aspect ratio */
+      margin-right: 10px; /* Space between logo and any text */
+    }
+  
+    /* Burger Icon */
+    .burger-menu {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+    }
+  
+    .burger-menu div {
+      width: 30px;
+      height: 5px;
+      background-color: #333;
+      transition: all 0.3s ease;
+    }
+  
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-250px);
+      }
+  
+      .dashboard-container {
+        margin-left: 0;
+        width: 100%;
+      }
+  
+      .sidebar.show {
+        transform: translateX(0);
+      }
+  
+      .burger-menu {
+        display: flex;
+      }
+  
+      .filters {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+  
+      .filters input {
+        width: 100%;
+      }
+  
+      .filters button {
+        width: 100%;
+      }
+    }
+  
+    /* Dashboard Layout */
+    .dashboard-container {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    /* Header */
+    .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;  /* Consistent size across pages */
+    font-weight: 200;  /* Light weight */
+    margin-bottom: 20px;
+}
+
+/* Wordmark Styling */
+.dashboard-header .wordmark {
+    font-size: 20px;  /* Consistent size */
+    font-family: 'Gotham', sans-serif;  /* Assuming Gotham font is being used */
+    color: #13E7D9;
+    font-weight: bold;  /* Bold for emphasis */
+}
+
+  
+
+  
+    /* Top Stats */
+    .dashboard-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+  
+    .stat-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      flex-grow: 1;
+    }
+  
+    .stat-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+  
+    .stat-card h3 {
+      font-size: 16px;
+      color: #040707;
+    }
+  
+    .stat-card p {
+      font-size: 24px;
+      font-weight: bold;
+      color: #27bcac;
+    }
+  
+    /* Chart Section */
+    .chart-row {
+      display: flex;
+      gap: 20px;
+    }
+  
+    .chart-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .chart-card h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+  
+    canvas {
+      max-width: 100%;
+    }
+  
+    .chart-row.row-2 {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+    }
+  
+    /* Ensure Gender and Region charts are the same size */
+    .chart-card.gender, .chart-card.region {
+      width: 100%;
+    }
+  
+    /* For consistent sizing in row 3 and row 4 */
+    .chart-card.equal-size {
+      width: 100%;
+    }
+  </style>
+  
+</head>
+<body>
+
+        <!-- Burger Icon -->
+        <div class="burger-menu" onclick="toggleSidebar()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <div class="logo">
+      <!-- Replace this with an image if needed -->
+      <img src="Discart Logo WM White@4x.png" alt="DisCart" class="logo-img">
+      <!-- Or use text for the logo: SYSiD -->
+  </div>      
+    <ul>
+        <li><a href="Performance4.html">Performance</a></li>
+        <li><a href="Customers4.html">Customers</a></li>
+        <li><a href="Reports4.html">Reports</a></li>
+        <li><a href="Campaigns4.html">Campaigns</a></li>
+        <li><a href="Brands4.html">Brands</a></li>
+        <li><a href="Stores4.html">Stores</a></li>
+        <li><a href="Login.html">Log Out</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1>Hi Krishna! See your customer data at a glance.</h1>
+      <div class="wordmark">FLOWSIGHT</div>
+    </div>
+
+    <!-- Top Stats -->
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h3>Acquired Customers</h3>
+        <p>1,200</p>
+      </div>
+      <div class="stat-card">
+        <h3>Repeat Buyers</h3>
+        <p>800</p>
+      </div>
+      <div class="stat-card">
+        <h3>Active Branches</h3>
+        <p>45</p>
+      </div>
+      <div class="stat-card">
+        <h3>Active Brands</h3>
+        <p>18</p>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="chart-row row-2">
+      <div class="chart-card gender">
+        <h3>Gender</h3>
+        <canvas id="genderChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Age</h3>
+        <canvas id="ageChart"></canvas>
+      </div>
+      <div class="chart-card region">
+        <h3>Region</h3>
+        <canvas id="regionChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Row 3 (City Address & Store Access) -->
+    <div class="chart-row">
+      <div class="chart-card equal-size">
+        <h3>City Address</h3>
+        <canvas id="cityChart"></canvas>
+      </div>
+      <div class="chart-card equal-size">
+        <h3>Store Access</h3>
+        <canvas id="storeAccessChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Row 4 (Category Engagement & Brand Engagement) -->
+    <div class="chart-row">
+      <div class="chart-card equal-size">
+        <h3>Category Engagement</h3>
+        <canvas id="categoryEngagementChart"></canvas>
+      </div>
+      <div class="chart-card equal-size">
+        <h3>Brand Engagement</h3>
+        <canvas id="brandEngagementChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Gender Chart
+    new Chart(document.getElementById('genderChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Male', 'Female'],
+        datasets: [{
+          data: [55, 45],
+          backgroundColor: ['#13E7D9', '#00CCCC']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        }
+      }
+    });
+
+    // Region Chart
+    new Chart(document.getElementById('regionChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Metro Manila', 'Balance Luzon', 'Visayas', 'Mindanao'],
+        datasets: [{
+          data: [30, 30, 25, 15],
+          backgroundColor: ['#13E7D9', '#00CCCC', '#008B8B', '#004D4D']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        }
+      }
+    });
+
+    // Age Chart (Vertical Bar Chart)
+    new Chart(document.getElementById('ageChart'), {
+      type: 'bar',
+      data: {
+        labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+        datasets: [{
+          data: [20, 35, 25, 15, 5],
+          backgroundColor: ['#13E7D9', '#00CCCC', '#008B8B', '#004D4D', '#00FEFE']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'top'
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false // Remove gridlines for a cleaner look
+            }
+          }
+        }
+      }
+    });
+
+    // City Address Chart
+    new Chart(document.getElementById('cityChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Antipolo', 'Taytay', 'Butuan'],
+        datasets: [{
+          label: 'City Address',
+          data: [50, 30, 20],
+          backgroundColor: '#13E7D9'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: { display: false },
+          y: { display: true }
+        },
+        elements: {
+          bar: {
+            borderWidth: 0 // Remove bar borders for a cleaner look
+          }
+        },
+        responsive: true
+      }
+    });
+
+    // Store Access Chart
+    new Chart(document.getElementById('storeAccessChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Makati', 'Mandaluyong', 'San Juan', 'Taguig', 'CDO'],
+        datasets: [{
+          label: 'Store Access',
+          data: [65, 59, 80, 81, 56],
+          backgroundColor: '#13E7D9'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: { display: false },
+          y: { display: true }
+        },
+        elements: {
+          bar: {
+            borderWidth: 0 // Remove bar borders for a cleaner look
+          }
+        },
+        responsive: true
+      }
+    });
+
+    // Category Engagement Chart
+    new Chart(document.getElementById('categoryEngagementChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Headache, Fever & Flu', 'Total Unilab', 'Body & Muscle Pain', 'Prescription Drugs', 'Vitamins & Supplements'],
+        datasets: [{
+          label: 'Category Engagement',
+          data: [60, 50, 70, 90, 85],
+          backgroundColor: '#13E7D9'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: { display: false },
+          y: { display: true }
+        },
+        elements: {
+          bar: {
+            borderWidth: 0 // Remove bar borders for a cleaner look
+          }
+        },
+        responsive: true
+      }
+    });
+
+    // Brand Engagement Chart
+    new Chart(document.getElementById('brandEngagementChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Total Unilab', 'Biogesic', 'Alaxan', 'Bioflu'],
+        datasets: [{
+          label: 'Brand Engagement',
+          data: [30, 25, 25, 20],
+          backgroundColor: '#13E7D9'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: { display: false },
+          y: { display: true }
+        },
+        elements: {
+          bar: {
+            borderWidth: 0 // Remove bar borders for a cleaner look
+          }
+        },
+        responsive: true
+      }
+    });
+  </script>
+</body>
+</html>

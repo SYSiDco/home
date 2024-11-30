@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSiD</title>
+    <style>
+        /* Define the Gotham Light font */
+        @font-face {
+            font-family: 'Gotham';
+            src: url('fonts/Gotham-Light.woff2') format('woff2'),
+                 url('fonts/Gotham-Light.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        /* Define the Gotham Black font */
+        @font-face {
+            font-family: 'Gotham';
+            src: url('fonts/Gotham-Black.woff2') format('woff2'),
+                 url('fonts/Gotham-Black.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        /* Define the Gotham Bold font */
+        @font-face {
+            font-family: 'Gotham';
+            src: url('fonts/Gotham-Bold.woff2') format('woff2'),
+                 url('fonts/Gotham-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Define the Gotham Regular font */
+        @font-face {
+            font-family: 'Gotham';
+            src: url('fonts/Gotham-Regular.woff2') format('woff2'),
+                 url('fonts/Gotham-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* General styling */
+        body {
+            font-family: 'Gotham', sans-serif;
+            font-weight: 300; /* Gotham Light */
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth; /* Smooth scrolling */
+            box-sizing: border-box; /* To ensure padding and margin do not affect layout */
+            text-align: left; /* Left justify the text */
+        }
+
+        /* Navbar styling */
+        .navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(19, 231, 217, 0.9); /* Transparent background */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.navbar.scrolled {
+    background: rgba(19, 231, 217, 1); /* Solid background on scroll */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+/* Logo styling */
+.logo {
+    display: flex;
+    align-items: center; /* Vertically align if the logo is an image or text */
+    font-size: 22px;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent logo from shrinking */
+}
+
+.logo-img {
+    height: 60px;  /* Adjust height to fit your logo */
+    width: auto;   /* Maintain aspect ratio */
+    margin-right: 10px; /* Space between logo and any text */
+}
+        /* Navigation links */
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 20px;
+            opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.5s ease forwards;
+        }
+        .nav-links li:nth-child(1) { animation-delay: 0.1s; }
+.nav-links li:nth-child(2) { animation-delay: 0.2s; }
+.nav-links li:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease, color 0.3s ease-in-out;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #00FEFE;
+        }
+
+        /* Button styling */
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            background-color: #13E7D9; /* Same color as the navbar */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #00FEFE;
+        }
+
+        .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(19, 231, 217, 0.9);
+    z-index: 2000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobile-menu a {
+    color: white;
+    font-size: 24px;
+    margin: 15px 0;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu {
+        display: flex;
+    }
+}
+
+
+        /* Hero section */
+        .hero {
+    display: flex;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    align-items: center;
+    padding: 0 5%;
+    background-color: #f4f4f4;
+    height: 100vh;
+    margin-top: -60px; /* Adjust to navbar height */
+    position: relative;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.hero-left {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Centers the image */
+    align-items: center;
+    max-width: 50%; /* Ensures the left side doesn't overlap */
+    padding: 10px;
+    opacity: 0;
+    animation: slideIn 1.5s ease-out forwards;
+}
+
+.hero-left img {
+    width: 100%;
+    max-width: 400px; /* Adjust image size */
+    height: auto;
+    animation: fadeIn 1.5s ease-out 1s forwards; /* Delay image fade-in */
+    opacity: 0;
+}
+
+.hero-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align text to the left */
+    max-width: 50%;
+    padding: 10px;
+    opacity: 0;
+    animation: slideIn 1.5s ease-out forwards;
+}
+@keyframes slideIn {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.hero-right h1 {
+    font-size: 44px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero-right h2 {
+    font-size: 28px;
+    font-weight: 300;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column; /* Stacks the content */
+    }
+
+    .hero-left, .hero-right {
+        max-width: 100%;
+    }
+
+    .hero-left img {
+        width: 80%; /* Adjust image size for mobile */
+    }
+
+    .hero-right h1 {
+        font-size: 28px; /* Smaller font for mobile */
+    }
+}
+
+        /* About section */
+#about {
+    display: flex;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    align-items: center;
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+    height: auto;
+}
+
+#about .left {
+    flex: 1;
+    max-width: 50%; /* Adjusts the width of the text */
+    padding: 10px;
+}
+
+#about .left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#about .left p {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    line-height: 1.6;
+}
+
+#about .right {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Centers the image */
+    align-items: center;
+    max-width: 50%; /* Adjusts the width of the image */
+    padding: 10px;
+}
+
+#about .right img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    #about {
+        flex-direction: column; /* Stacks the content */
+    }
+
+    #about .left, #about .right {
+        max-width: 100%;
+    }
+
+    #about .right img {
+        width: 80%; /* Adjust image size for mobile */
+    }
+
+    #about .left h2 {
+        font-size: 24px; /* Smaller font for mobile */
+    }
+}
+
+        /* Ecosystem Section */
+        #ecosystem {
+            padding: 80px 20px;
+            background-color: #f4f4f4;
+        }
+
+        .ecosystem-header {
+            text-align: left;
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        
+        .ecosystem-items {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .ecosystem-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 22%; /* Ensure items are side by side */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ecosystem-item img {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .ecosystem-item h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+.ecosystem-item h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+        .ecosystem-item p {
+            font-size: 18px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .ecosystem-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ecosystem-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #333;  /* Dark background color */
+    color: white;            /* White text color */
+    text-align: center;      /* Center-align text */
+    padding: 20px 0;         /* Padding around footer */
+    font-family: Gotham, sans-serif;
+}
+
+/* Footer Logo Styling */
+.footer-logo-img {
+    height: 40px;            /* Set height of logo */
+    width: auto;             /* Maintain aspect ratio */
+    margin-bottom: 20px;     /* Add some space below the logo */
+}
+
+/* Social Media Icons Styling */
+.footer-socials {
+    list-style-type: none;   /* Remove list bullets */
+    padding: 0;              /* Remove padding */
+    margin: 10px 0;          /* Add some vertical space */
+    display: flex;           /* Align items horizontally */
+    justify-content: center; /* Center align social icons */
+}
+
+.footer-socials li {
+    margin: 0 15px;          /* Add space between icons */
+}
+
+.social-icon img {
+    width: 30px;             /* Set size for social media icons */
+    height: 30px;            /* Set size for social media icons */
+    transition: transform 0.3s ease;  /* Smooth transition for hover effect */
+}
+
+.social-icon:hover img {
+    transform: scale(1.1);   /* Slightly enlarge the icon on hover */
+}
+
+/* Footer Links Styling */
+.footer-links {
+    margin: 20px 0;          /* Add vertical spacing */
+}
+
+.footer-links a {
+    color: white;            /* White text color */
+    text-decoration: none;   /* Remove underline */
+    margin: 0 15px;          /* Space between links */
+    font-size: 16px;         /* Font size for links */
+    transition: color 0.3s ease;  /* Smooth transition for hover effect */
+}
+
+.footer-links a:hover {
+    color: #FFA07A;          /* Change color on hover */
+}
+
+/* Footer Copyright Styling */
+.footer-copyright {
+    margin-top: 20px;        /* Add space on top */
+    font-size: 14px;         /* Smaller text for copyright */
+}
+
+/* Hover Effect */
+.footer a:hover {
+    color: #00FEFE;  /* Change link color on hover */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-nav ul {
+    margin-top: 10px;
+  }
+
+  .social-icons {
+    margin-top: 10px;
+  }
+}
+
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-left, .footer-middle, .footer-right {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .footer-middle ul {
+        padding-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+
+
+
+        /* Contact Us Section */
+        #contact-us {
+            position: relative;
+            height: 100vh;
+            background: url('coffee doodle.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .contact-us-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-us-content {
+            text-align: center;
+            color: white;
+        }
+
+        .contact-us-content h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .contact-us-content .cta-button {
+            padding: 16px 32px;
+            font-size: 18px;
+            text-decoration: none;
+            background-color: #333;
+            color: #13E7D9;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-us-content .cta-button:hover {
+            background-color: #00FEFE;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                height: auto;
+                padding: 40px 20px;
+            }
+
+            .hero-left, .hero-right {
+                flex: none;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .phone-mockup {
+                width: 80%;
+                height: auto;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .burger {
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .burger div {
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 4px 0;
+            }
+
+            .nav-links-mobile {
+                display: none;
+                flex-direction: column;
+                background-color: #333;
+                position: absolute;
+                top: 50px;
+                right: 20px;
+                padding: 20px;
+            }
+
+            .nav-links-mobile a {
+                color: white;
+                font-size: 18px;
+                margin-bottom: 15px;
+                text-decoration: none;
+            }
+
+            .nav-links-mobile a:hover {
+                color: #00FEFE;
+            }
+
+            .cta-button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            /* Mobile layout for ecosystem items */
+            #ecosystem .ecosystem-items {
+                flex-direction: column;
+            }
+
+            .ecosystem-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <!-- Replace this with an image if needed -->
+            <img src="SYSiD Logo_3rdfade.png" alt="SYSiD" class="logo-img">
+            <!-- Or use text for the logo: SYSiD -->
+        </div>
+        <div class="burger" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#ecosystem">Our Ecosystem</a></li>
+            <li><a href="#contact-us">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div id="home" class="hero">
+        <div class="hero-left">
+            <img src="Collab doodle.png">
+        </div>
+        <div class="hero-right">
+            <h1>Invested in driving your business growth</h1>
+            <p>Diving deep into digital transformations</p>
+            <a href="#ecosystem" class="cta-button">Grow With Our Ecosystem</a>
+        </div>
+    </div>
+
+    <div id="about">
+        <div class="right">
+            <img src="Reimagining Online Experience doodle.png" alt="About SYSiD">
+         </div>
+        <div class="left">
+            <h2 class="smaller-header">A forward-thinking, tech-driven marketing consultancy group</h2>
+            <p class="body-text">dedicated to empowering companies through seamless digital transformation</p>
+            <h2 class="smaller-header">We help businesses thrive in the digital age</h2>
+            <p class="body-text">providing innovative solutions tailored to their unique needs
+            </p>
+        </div>
+
+    </div>
+
+    <div id="ecosystem">
+        <h3 class="ecosystem-header">Empowering connections through an integrated ecosystem of innovation, insights, and impact</h3>
+        <div class="ecosystem-items">
+            <div class="ecosystem-item">
+                <img src="Engage.png" alt="Engage">
+                <h3>Engage</h3>
+                <h4>Customer and Audience Acquisition </h4>
+                <p>Collect and interact with audiences through engaging, unique interfaces.
+                </p>
+            </div>
+            <div class="ecosystem-item">
+                <img src="Synthesize.png" alt="Synthesize">
+                <h3>Synthesize</h3>
+                <h4>Data Integration and Aggregation </h4>
+                <p>Aggregate and transform data from various sources into organized data tables for automated management and actionable insights.
+                </p>
+            </div>
+            <div class="ecosystem-item">
+                <img src="Reflect.png" alt="Reflect">
+                <h3>Reflect</h3>
+                <h4>Real-Time Data Visualization</h4>
+                <p>Visualize data in real time to enable quick, informed decision-making.
+                </p>
+            </div>
+            <div class="ecosystem-item">
+                <img src="Enrich.png" alt="Enrich">
+                <h3>Enrich</h3>
+                <h4>Audience Nurturing & Prospecting </h4>
+                <p>Use insights to create high-impact campaigns, feeding new data back into the system for continuous improvement.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-us">
+        <div class="contact-us-overlay">
+            <div class="contact-us-content">
+                <a href="mailto:hello@sysid.co" class="cta-button">Email Us</a><br><br>
+                <a href="https://m.me/sysid.co" class="cta-button">Message Us</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            const nav = document.querySelector('.nav-links-mobile');
+            nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+        }
+    </script>
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#ecosystem">Our Ecosystem</a>
+        <a href="#contact-us">Contact Us</a>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2024 SYSiD. All Rights Reserved.</p>
+    </div>
+</footer>
+
+  
+
+</body>
+</html>
